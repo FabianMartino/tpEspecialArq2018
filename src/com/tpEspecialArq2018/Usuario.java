@@ -38,17 +38,19 @@ public class Usuario implements Serializable {
 	private List<Rol> roles;
 	
 	@ManyToOne
-    @JoinColumn(name="lugar_id")
+    @JoinColumn(name="lugar_id", nullable = false)
     private LugarDeTrabajo locacion;
 	
+	
 	@OneToMany(mappedBy="id_usuario")
-    private List<Evaluacion> evaluacion;
+	private List<Evaluacion> evaluacion;
 
 	public Usuario(){}
 
-	public Usuario(String nombre, String apellido) {
+	public Usuario(String nombre, String apellido, LugarDeTrabajo lugar) {
 		this.nombre = nombre;
 		this.apellido = apellido;
+		this.locacion = lugar;
 	}
 
 	public String getNombre() {
@@ -65,6 +67,14 @@ public class Usuario implements Serializable {
 
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
+	}
+
+	public LugarDeTrabajo getLocacion() {
+		return locacion;
+	}
+
+	public void setLocacion(LugarDeTrabajo locacion) {
+		this.locacion = locacion;
 	}
 	
 }

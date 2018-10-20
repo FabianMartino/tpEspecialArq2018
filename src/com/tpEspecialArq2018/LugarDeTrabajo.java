@@ -20,10 +20,7 @@ public class LugarDeTrabajo implements Serializable {
 	private long id;
 	@Column(nullable = false)
 	private String name;
-	
-	@OneToMany(mappedBy="locacion")
-    private List<Usuario> usuarios;
-	
+		
 	public LugarDeTrabajo() {
 		
 	}

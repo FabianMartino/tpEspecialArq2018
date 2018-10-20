@@ -22,10 +22,10 @@ public class Evaluacion implements Serializable{
 	
 
     @ManyToOne
-    @JoinColumn(name="usuario")
+    @JoinColumn(name="usuario", nullable = false)
     private Usuario id_usuario;
     @ManyToOne
-    @JoinColumn(name="trabajo")
+    @JoinColumn(name="trabajo", nullable = false)
     private Trabajo id_trabajo;
 	
 	public Evaluacion() {

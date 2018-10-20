@@ -47,14 +47,17 @@ public class TestRESTInterface {
 //		jsonObject.put("nombre", "juan");
 //		jsonObject.put("apellido", "paez");
 //		String jsonString = jsonObject.toString();
-		Usuario nuevo = new Usuario("juan","paez");
+		LugarDeTrabajo l = new LugarDeTrabajo("casa");
+		l = LugarDeTrabajoDAO.getInstance().persist(l);
+		Usuario nuevo = new Usuario("juan","paez",l);
 		nuevo = UsuarioDAO.getInstance().persist(nuevo);
-		nuevo = new Usuario("sil","muñoz");
+		nuevo = new Usuario("sil","muñoz",l);
 		nuevo = UsuarioDAO.getInstance().persist(nuevo);
-		nuevo = new Usuario("shaggy","vazquez");
+		nuevo = new Usuario("shaggy","vazquez",l);
 		nuevo = UsuarioDAO.getInstance().persist(nuevo);
-		nuevo = new Usuario("fabo","martino");
+		nuevo = new Usuario("fabo","martino",l);
 		nuevo = UsuarioDAO.getInstance().persist(nuevo);
+		
 //		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 //		HttpResponse response = client.execute(post);
 //
