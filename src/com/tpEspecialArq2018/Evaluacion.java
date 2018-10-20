@@ -18,8 +18,6 @@ public class Evaluacion implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
-	
-	
 
     @ManyToOne
     @JoinColumn(name="usuario")
