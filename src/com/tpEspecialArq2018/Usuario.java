@@ -76,5 +76,11 @@ public class Usuario implements Serializable {
 	public void setLocacion(LugarDeTrabajo locacion) {
 		this.locacion = locacion;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Usuario [id_user=" + id_user + ", nombre=" + nombre + ", apellido=" + apellido + ", trabajos="
+				+ trabajos + ", palabras=" + palabras + ", roles=" + roles + ", locacion=" + locacion + ", evaluacion="
+				+ evaluacion + "]";
+	}
 }

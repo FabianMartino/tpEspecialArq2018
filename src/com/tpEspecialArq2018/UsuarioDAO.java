@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-public class UsuarioDAO implements DAO<Usuario,Integer>{
+public class UsuarioDAO implements DAO<Usuario,Long>{
 	
 	private static UsuarioDAO daoUsuario;
 	
@@ -19,13 +19,16 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	}
 
 	@Override
-	public Usuario findById(Integer id) {
-		
+	public Usuario findById(Long id) {
 		EntityManager entityManager=EMF.createEntityManager();
 		Usuario usuario=entityManager.find(Usuario.class, id);
 		entityManager.close();
 		return usuario;
+	}
 	
+	public String getUserData(long id) {
+		Usuario usuario = findById(id);
+		return usuario.toString();
 	}
 	
 	public List<Usuario> findByEdad(int a, int b) {
@@ -56,7 +59,7 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public boolean delete(Long id) {
 		EntityManager entityManager=EMF.createEntityManager();
 		Query query = entityManager.createQuery("DELETE FROM Usuario p WHERE p.id = "+id);  //.createQuery("DELETE FROM Perro p WHERE p.id = "+id+"",Perro.class);
 		int cambios = query.executeUpdate();
@@ -69,7 +72,7 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	}
 
 	@Override
-	public Usuario update(Integer id, Usuario entity) {
+	public Usuario update(Long id, Usuario entity) {
 		EntityManager entityManager=EMF.createEntityManager();
 		TypedQuery<Usuario> query = entityManager.createQuery("UPDATE Usuario p SET p.nombre = "+entity.getNombre()+" WHERE p.id = "+id+"",Usuario.class);
 		entityManager.close();
