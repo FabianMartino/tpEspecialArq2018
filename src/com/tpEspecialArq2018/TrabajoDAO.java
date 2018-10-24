@@ -5,7 +5,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-public class TrabajoDAO implements DAO<Trabajo,Integer>{
+public class TrabajoDAO implements DAO<Trabajo,Long>{
 	
 	private static TrabajoDAO daoTrabajo;
 	
@@ -29,7 +29,7 @@ public class TrabajoDAO implements DAO<Trabajo,Integer>{
 	}
 
 	@Override
-	public Trabajo findById(Integer id) {
+	public Trabajo findById(Long id) {
 		// TODO Auto-generated method stub
 		EntityManager entityManager=EMF.createEntityManager();
 		Trabajo trabajo = entityManager.find(Trabajo.class, id);
@@ -47,7 +47,7 @@ public class TrabajoDAO implements DAO<Trabajo,Integer>{
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public boolean delete(Long id) {
 		EntityManager entityManager=EMF.createEntityManager();
 		Query query = entityManager.createQuery("DELETE FROM Usuario p WHERE p.id = "+id);  //.createQuery("DELETE FROM Perro p WHERE p.id = "+id+"",Perro.class);
 		int cambios = query.executeUpdate();
@@ -60,7 +60,7 @@ public class TrabajoDAO implements DAO<Trabajo,Integer>{
 	}
 
 	@Override
-	public Trabajo update(Integer id, Trabajo entity) {
+	public Trabajo update(Long id, Trabajo entity) {
 //		EntityManager entityManager=EMF.createEntityManager();
 //		TypedQuery<Trabajo> query = entityManager.createQuery("UPDATE Usuario p SET p.nombre = "+entity.getNombre()+" WHERE p.id = "+id+"",Trabajo.class);
 //		entityManager.close();

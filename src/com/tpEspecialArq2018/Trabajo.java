@@ -22,6 +22,7 @@ public class Trabajo implements Serializable{
 	private String category;
 	
 	@ManyToMany(mappedBy="trabajos")
+
 	private List<Usuario> usuarios;
 	
 	@ManyToMany

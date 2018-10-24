@@ -63,11 +63,16 @@ public class TestRESTInterface {
 		p3 = PalabraDAO.getInstance().persist(p3);
 		Palabra p4 = new Palabra("Palabra4", true);
 		p4 = PalabraDAO.getInstance().persist(p4);
+		System.out.println("palabras:"+p1.getPalabra()+", "+p2.getPalabra()+", "+p3.getPalabra()+", "+p4.getPalabra()+".");
 		
 	} 
 	public void getUserData(int i){
 		Usuario u = usuarios.get(i);
 		System.out.println(UsuarioDAO.getInstance().getUserData(u.getId_user()));
+
+	}
+	public void getUserData(Long id){
+		
 	}
 	
 }

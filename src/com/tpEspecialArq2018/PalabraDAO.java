@@ -4,7 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-public class PalabraDAO implements DAO<Palabra,Integer>{
+public class PalabraDAO implements DAO<Palabra,Long>{
 	
 	private static PalabraDAO daoPalabra;
 	
@@ -28,13 +28,13 @@ public class PalabraDAO implements DAO<Palabra,Integer>{
 	}
 
 	@Override
-	public Palabra update(Integer id, Palabra newEntityValues) {
+	public Palabra update(Long id, Palabra newEntityValues) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Palabra findById(Integer id) {
+	public Palabra findById(Long id) {
 		// TODO Auto-generated method stub
 		EntityManager entityManager=EMF.createEntityManager();
 		Palabra palabra=entityManager.find(Palabra.class, id);
@@ -43,7 +43,7 @@ public class PalabraDAO implements DAO<Palabra,Integer>{
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public boolean delete(Long id) {
 		EntityManager entityManager=EMF.createEntityManager();
 		Query query = entityManager.createQuery("DELETE FROM Usuario p WHERE p.id = "+id);  //.createQuery("DELETE FROM Perro p WHERE p.id = "+id+"",Perro.class);
 		int cambios = query.executeUpdate();
