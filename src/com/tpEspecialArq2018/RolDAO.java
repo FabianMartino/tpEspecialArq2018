@@ -6,43 +6,41 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-public class LugarDeTrabajoDAO implements DAO<LugarDeTrabajo,Long>{
+public class RolDAO implements DAO<Rol,Long>{
 	
-	private static LugarDeTrabajoDAO daoLugarDeTrabajo;
+	private static RolDAO daoRol;
 	
-	private LugarDeTrabajoDAO(){}
+	private RolDAO(){}
 
-	public static LugarDeTrabajoDAO getInstance() {
-		if(daoLugarDeTrabajo==null)
-			daoLugarDeTrabajo=new LugarDeTrabajoDAO();
-		return daoLugarDeTrabajo;
+	public static RolDAO getInstance() {
+		if(daoRol==null)
+			daoRol=new RolDAO();
+		return daoRol;
 	}
 
 	@Override
-	public LugarDeTrabajo findById(Long id) {
-		
+	public Rol findById(Long id) {
 		EntityManager entityManager=EMF.createEntityManager();
-		LugarDeTrabajo lugarDeTrabajo=entityManager.find(LugarDeTrabajo.class, id);
+		Rol rol=entityManager.find(Rol.class, id);
 		entityManager.close();
-		return lugarDeTrabajo;
-	
+		return rol;
 	}
-
+	
 	@Override
-	public LugarDeTrabajo persist(LugarDeTrabajo usuario) {
+	public Rol persist(Rol rol) {
 		EntityManager entityManager=EMF.createEntityManager();
 		entityManager.getTransaction().begin();
-		entityManager.persist(usuario);
+		entityManager.persist(rol);
 		entityManager.getTransaction().commit();
 		entityManager.close();
-		return usuario;
+		return rol;
 	}
 
 	@Override
-	public List<LugarDeTrabajo> findAll() {
+	public List<Rol> findAll() {
 		EntityManager entityManager=EMF.createEntityManager();
-		TypedQuery<LugarDeTrabajo> query = entityManager.createQuery("SELECT p FROM Usuario p",LugarDeTrabajo.class);
-		List<LugarDeTrabajo> result = query.getResultList();
+		TypedQuery<Rol> query = entityManager.createQuery("SELECT p FROM Rol r",Rol.class);
+		List<Rol> result = query.getResultList();
 		entityManager.close();
 		return result;
 	}
@@ -61,9 +59,9 @@ public class LugarDeTrabajoDAO implements DAO<LugarDeTrabajo,Long>{
 	}
 
 	@Override
-	public LugarDeTrabajo update(Long id, LugarDeTrabajo entity) {
+	public Rol update(Long id, Rol entity) {
 		EntityManager entityManager=EMF.createEntityManager();
-		TypedQuery<LugarDeTrabajo> query = entityManager.createQuery("UPDATE Usuario p SET p.nombre = "+entity.getName()+" WHERE p.id = "+id+"",LugarDeTrabajo.class);
+		TypedQuery<Rol> query = entityManager.createQuery("UPDATE Rol p SET p.tipo = "+entity.getTipo()+" WHERE p.id = "+id+"",Rol.class);
 		entityManager.close();
 		return entity;	
 	}

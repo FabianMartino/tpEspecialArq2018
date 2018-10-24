@@ -45,15 +45,12 @@ public class TestRESTInterface {
 		p3 = PalabraDAO.getInstance().persist(p3);
 		Palabra p4 = new Palabra("Palabra4", true);
 		p4 = PalabraDAO.getInstance().persist(p4);
+		System.out.println("palabras:"+p1.getPalabra()+", "+p2.getPalabra()+", "+p3.getPalabra()+", "+p4.getPalabra()+".");
 		
 	} 
 	public void crearUsuarios() throws ClientProtocolException, IOException {
 		
-		ArrayList<String[]> usuarios = CSVReader.read("src/datasets/users.csv");
-		for (String[] usuario : usuarios) {
-			Usuario u = new Usuario(usuario[0], usuario[1], LugarDeTrabajoDAO.getInstance().findById(1));
-			u = UsuarioDAO.getInstance().persist(u);
-		}
+		
 	}
 	
 	public void getUserData(Long id){

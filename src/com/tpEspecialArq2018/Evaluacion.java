@@ -36,4 +36,21 @@ public class Evaluacion implements Serializable{
 	public void setId(int id) {
 		this.id = id;
 	}
+
+	public Usuario getId_usuario() {
+		return id_usuario;
+	}
+
+	public void setId_usuario(Usuario id_usuario) {
+		this.id_usuario = id_usuario;
+	}
+
+	public Trabajo getId_trabajo() {
+		return id_trabajo;
+	}
+
+	public void setId_trabajo(Trabajo id_trabajo) {
+		this.id_trabajo = id_trabajo;
+	}
+	
 }
