@@ -11,19 +11,25 @@ import com.tpEspecialArq2018.UsuarioDAO;
 import utils.CSVReader;
 
 public class TestRESTInterface {
-
+	ArrayList<LugarDeTrabajo> lugaresDeTrabajo = new ArrayList<LugarDeTrabajo>();
+	ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+	ArrayList<Trabajo> trabajos = new ArrayList<Trabajo>();
+	ArrayList<Palabra> palabras = new ArrayList<Palabra>();
+	
 	@Test
 	public void testRESTInterface() throws ClientProtocolException, IOException {
 		crearLugaresDeTrabajos();
 		crearUsuarios();
 		crearPalabras();
 		crearTrabajos();
+		getUserData(0);
  	}
 	
 	public void crearTrabajos() throws ClientProtocolException, IOException {
 		ArrayList<String[]> trabajos = CSVReader.read("src/datasets/trabajos.csv");
 		for (String[] trabajo : trabajos) {
 			Trabajo t = new Trabajo(trabajo[0]);
+			this.trabajos.add(t);
 			t = TrabajoDAO.getInstance().persist(t);
 		}
 	}
@@ -31,10 +37,22 @@ public class TestRESTInterface {
 	public void crearLugaresDeTrabajos() throws ClientProtocolException, IOException {
 		ArrayList<String[]> trabajos = CSVReader.read("src/datasets/lugaresDeTrabajo.csv");
 		for (String[] trabajo : trabajos) {
-			LugarDeTrabajo t = new LugarDeTrabajo(trabajo[0]);
-			t = LugarDeTrabajoDAO.getInstance().persist(t);
+			LugarDeTrabajo lugar = new LugarDeTrabajo(trabajo[0]);
+			lugaresDeTrabajo.add(lugar);
+			lugar = LugarDeTrabajoDAO.getInstance().persist(lugar);
 		}
 	}	
+
+	public void crearUsuarios() throws ClientProtocolException, IOException {
+		
+		ArrayList<String[]> usuarios = CSVReader.read("src/datasets/users.csv");
+		int index = 0;
+		for (String[] usuario : usuarios) {
+			Usuario u = new Usuario(usuario[0], usuario[1], lugaresDeTrabajo.get(index++));
+			this.usuarios.add(u);
+			UsuarioDAO.getInstance().persist(u);
+		}
+	}
 
 	public void crearPalabras() throws ClientProtocolException, IOException {
 		Palabra p1 = new Palabra("Palabra1", true);
@@ -47,18 +65,9 @@ public class TestRESTInterface {
 		p4 = PalabraDAO.getInstance().persist(p4);
 		
 	} 
-	public void crearUsuarios() throws ClientProtocolException, IOException {
-		
-		ArrayList<String[]> usuarios = CSVReader.read("src/datasets/users.csv");
-		for (String[] usuario : usuarios) {
-			Usuario u = new Usuario(usuario[0], usuario[1], LugarDeTrabajoDAO.getInstance().findById(1));
-			u = UsuarioDAO.getInstance().persist(u);
-		}
-	}
-	
-	public void getUserData(Long id){
-		
-		
+	public void getUserData(int i){
+		Usuario u = usuarios.get(i);
+		System.out.println(UsuarioDAO.getInstance().getUserData(u.getId_user()));
 	}
 	
 }

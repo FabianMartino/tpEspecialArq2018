@@ -4,16 +4,16 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -28,13 +28,13 @@ public class Usuario implements Serializable {
 	@Column(nullable = false)
 	private String apellido;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Trabajo> trabajos;
 	
-	@ManyToMany
+	@ManyToMany//(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Palabra> palabras;
 	
-	@ManyToMany
+	@ManyToMany//(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Rol> roles;
 	
 	@ManyToOne
@@ -83,4 +83,49 @@ public class Usuario implements Serializable {
 				+ trabajos + ", palabras=" + palabras + ", roles=" + roles + ", locacion=" + locacion + ", evaluacion="
 				+ evaluacion + "]";
 	}
+
+	public long getId_user() {
+		return id_user;
+	}
+
+	public void setId_user(long id_user) {
+		this.id_user = id_user;
+	}
+
+	public List<Trabajo> getTrabajos() {
+		return trabajos;
+	}
+
+	public void setTrabajos(List<Trabajo> trabajos) {
+		this.trabajos = trabajos;
+	}
+
+	public List<Palabra> getPalabras() {
+		return palabras;
+	}
+
+	public void setPalabras(List<Palabra> palabras) {
+		this.palabras = palabras;
+	}
+
+	public List<Rol> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Rol> roles) {
+		this.roles = roles;
+	}
+
+	public List<Evaluacion> getEvaluacion() {
+		return evaluacion;
+	}
+
+	public void setEvaluacion(List<Evaluacion> evaluacion) {
+		this.evaluacion = evaluacion;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
 }

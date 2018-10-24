@@ -9,7 +9,6 @@
 		<class>com.tpEspecialArq2018.Trabajo</class>
 		<class>com.tpEspecialArq2018.LugarDeTrabajo</class>
 
-			
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/tpEspecialArq2018?createDatabaseIfNotExist=true" />
