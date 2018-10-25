@@ -1,6 +1,7 @@
 package com.tpEspecialArq2018;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,10 @@ public class Evaluacion implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
+	@Column
+	private Date fecha;
+	@Column
+	private int nota;
 	
 
     @ManyToOne
@@ -27,6 +32,12 @@ public class Evaluacion implements Serializable{
     private Trabajo id_trabajo;
 	
 	public Evaluacion() {
+	}
+	public Evaluacion(Usuario idUser, Trabajo idTrabajo, Date fecha, int nota) {
+		this.id_trabajo = idTrabajo;
+		this.id_usuario = idUser;
+		this.fecha = fecha;
+		this.nota = nota;
 	}
 
 	public long getId() {
@@ -51,6 +62,22 @@ public class Evaluacion implements Serializable{
 
 	public void setId_trabajo(Trabajo id_trabajo) {
 		this.id_trabajo = id_trabajo;
+	}
+
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
+	public int getNota() {
+		return nota;
+	}
+
+	public void setNota(int nota) {
+		this.nota = nota;
 	}
 	
 }

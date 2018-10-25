@@ -27,7 +27,7 @@ public class Usuario implements Serializable {
 	@Column(nullable = false)
 	private String apellido;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany//(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Trabajo> trabajos;
 	
 	@ManyToMany//(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -78,9 +78,7 @@ public class Usuario implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Usuario [id_user=" + id_user + ", nombre=" + nombre + ", apellido=" + apellido + ", trabajos="
-				+ trabajos + ", palabras=" + palabras + ", roles=" + roles + ", locacion=" + locacion + ", evaluacion="
-				+ evaluacion + "]";
+		return "Usuario [id_user=" + id_user + ", nombre=" + nombre + ", apellido=" + apellido + ", locacion=" + locacion.getName() + "]";
 	}
 
 	public long getId_user() {

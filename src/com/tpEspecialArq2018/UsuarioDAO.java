@@ -21,22 +21,14 @@ public class UsuarioDAO implements DAO<Usuario,Long>{
 	@Override
 	public Usuario findById(Long id) {
 		EntityManager entityManager=EMF.createEntityManager();
-		Usuario usuario=entityManager.find(Usuario.class, id);
+		Usuario usuario = entityManager.find(Usuario.class, id);
 		entityManager.close();
 		return usuario;
 	}
 	
-	public String getUserData(long id) {
+	public String getUserData(Long id) {
 		Usuario usuario = findById(id);
 		return usuario.toString();
-	}
-	
-	public List<Usuario> findByEdad(int a, int b) {
-		EntityManager entityManager=EMF.createEntityManager();
-		TypedQuery<Usuario> query = entityManager.createQuery("SELECT p FROM Usuario p WHERE p.edad BETWEEN "+a+" AND "+b+"",Usuario.class);
-		List<Usuario> result = query.getResultList();
-		entityManager.close();
-		return result;
 	}
 
 	@Override
