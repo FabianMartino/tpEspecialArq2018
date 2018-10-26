@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 @Entity
@@ -19,15 +17,18 @@ public class Rol implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id_rol;
+	
 	@Column(nullable = false)
 	private String tipo;
+	
+	@ManyToMany(mappedBy="roles")
+	List<Usuario> usuarios;
 	
 	public Rol() {
 		
 	}
 	public Rol(String tipo) {
 		this.tipo = tipo;
-		id_rol++;
 	}
 
 	public long getId() {
@@ -45,4 +46,8 @@ public class Rol implements Serializable {
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
+	
+//	public void addUsuarios(Usuario u) {
+//		this.usuarios.add(u);
+//	}
 }

@@ -79,5 +79,9 @@ public class Evaluacion implements Serializable{
 	public void setNota(int nota) {
 		this.nota = nota;
 	}
+	@Override
+	public String toString() {
+		return "Evaluacion [fecha=" + fecha + ", nota=" + nota + ", id_usuario=" + id_usuario + "]";
+	}
 	
 }

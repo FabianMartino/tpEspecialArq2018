@@ -1,8 +1,5 @@
 package com.tpEspecialArq2018;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,21 +20,24 @@ public class TestRESTInterface {
 	ArrayList<Trabajo> trabajos = new ArrayList<Trabajo>();
 	ArrayList<Palabra> palabras = new ArrayList<Palabra>();
 	ArrayList<Evaluacion> evaluaciones = new ArrayList<Evaluacion>();
+	ArrayList<Rol> roles = new ArrayList<Rol>();
 	
 	@Test
 	public void testRESTInterface() throws ClientProtocolException, IOException, ParseException {
+		crearRoles();
 		crearLugaresDeTrabajos();
+		crearTrabajos();
 		crearUsuarios();
 		crearPalabras();
-		crearTrabajos();
 		crearEvaluaciones();
-
+		getTrabajosAutor();
+		getTrabajos();
  	}
 	
 	public void crearTrabajos() throws ClientProtocolException, IOException {
 		ArrayList<String[]> trabajos = CSVReader.read("src/datasets/trabajos.csv");
 		for (String[] trabajo : trabajos) {
-			Trabajo t = new Trabajo(trabajo[0]);
+			Trabajo t = new Trabajo(trabajo[0], trabajo[1]);
 			this.trabajos.add(t);
 			t = TrabajoDAO.getInstance().persist(t);
 		}
@@ -58,6 +58,8 @@ public class TestRESTInterface {
 		int index = 0;
 		for (String[] usuario : usuarios) {
 			Usuario u = new Usuario(usuario[0], usuario[1], lugaresDeTrabajo.get(index++));
+			u.addRol(this.roles.get(1/index));
+			u.addTrabajo(this.trabajos.get(index));
 			this.usuarios.add(u);
 			UsuarioDAO.getInstance().persist(u);
 		}
@@ -76,6 +78,15 @@ public class TestRESTInterface {
 		}
 	}
 	
+	public void crearRoles(){
+		ArrayList<String[]> rolesRead = CSVReader.read("src/datasets/roles.csv");
+		for (String[] rol : rolesRead) {
+			Rol r = new Rol(rol[0]);
+			this.roles.add(r);
+			RolDAO.getInstance().persist(r);
+		}
+	}
+	
 	public void crearPalabras() throws ClientProtocolException, IOException {
 		Palabra p1 = new Palabra("Palabra1", true);
 		p1 = PalabraDAO.getInstance().persist(p1);
@@ -86,6 +97,7 @@ public class TestRESTInterface {
 		Palabra p4 = new Palabra("Palabra4", true);
 		p4 = PalabraDAO.getInstance().persist(p4);		
 	}
+	
 	@Test
 	public void getUserData(){
 		System.out.println("Test user data:");
@@ -111,8 +123,34 @@ public class TestRESTInterface {
 		List<Evaluacion> e = EvaluacionDAO.getInstance().findEntreFechas("2011-02-01", "2012-01-01", u.get(0).getId_user());
 		System.out.println("evaluaciones:");
 		for (Evaluacion evaluacion : e) {
-			System.out.println(evaluacion);
+			System.out.println(evaluacion.toString());
 		}
+	}
+	
+	
+	public void getTrabajosAutor(){
+		System.out.println("Dado un autor, retornar todos los trabajos de investigación enviados");
+		Usuario u = usuarios.get(0);
+		u.addTrabajo(this.trabajos.get(0));
+		List<Trabajo> trabajosAutor = u.getTrabajos();
+		for (Trabajo trabajo : trabajosAutor) {
+			System.out.println(trabajo.toString());
+		}
+	}
+	
+	public void getTrabajos() {
+		System.out.println("Consultar trabajos de investigación y sus propiedades");
+		for (Trabajo trabajo : this.trabajos) {
+			System.out.println(trabajo.toString());
+		}
+	}	
+	
+	
+	public void getTrabajosAutorRevisor() {
+		System.out.println("Seleccionar trabajos de investigación de un autor y revisor en una determinada área de investigación utilizando consultas JPQL");
+		Usuario u = this.usuarios.get(0);
+		
+		
 	}
 	
 }

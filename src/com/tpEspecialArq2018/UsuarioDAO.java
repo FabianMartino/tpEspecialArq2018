@@ -1,5 +1,6 @@
 package com.tpEspecialArq2018;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -70,5 +71,42 @@ public class UsuarioDAO implements DAO<Usuario,Long>{
 		entityManager.close();
 		return entity;	
 	}
+	
+	public List<Trabajo> getTrabajos(Long id, String categoria) {
+		
+		EntityManager entityManager=EMF.createEntityManager();
+		TypedQuery<Trabajo> query = entityManager.createQuery(
+				"SELECT u FROM Usuario u WHERE u.id_user =" + id + " JOIN Trabajo t ON t.id_trabajo=u.id_user" ,Trabajo.class);
+		List<Trabajo> result = query.getResultList();
+		entityManager.close();
+		return result;
+		
+	}
+//	public List<Trabajo> findAllTrabajosAutorRevisorTema(int idAutor, int idEvaluador, int idTematica) {
+//		EntityManager entityManager = EMF.createEntityManager();
+//		Usuario autor = this.findById(idAutor);
+//		Usuario evaluador = this.findById(idEvaluador);
+//		
+//		TematicaDAO daoT = TematicaDAO.getInstance();
+//		Tematica tema = daoT .findById(idTematica);
+//		if(autor != null && evaluador != null && tema !=null) {
+//			Query query = entityManager.createNativeQuery(
+//					"SELECT * FROM trabajo t "
+//					+ "JOIN autor_trabajo aut ON t.id = aut.trabajo_id "
+//					+ "JOIN evaluador_trabajo et ON t.id = et.trabajo_id "
+//					+ "JOIN trabajo_tematica tt ON t.id = tt.Trabajo_id "
+//					+ "WHERE aut.autor_id = :idAutor " 
+//					+ "AND et.evaluador_id = :idEvaluador "
+//					+ "AND tt.temas_id = :idTematica", Trabajo.class);
+//			query.setParameter("idAutor", idAutor);
+//			query.setParameter("idEvaluador", idEvaluador);
+//			query.setParameter("idTematica", idTematica);
+//			if (!query.getResultList().isEmpty()) {
+//				return query.getResultList();
+//			}
+//		}
+//		System.out.println("La consulta no devolvio ningun resultado");
+//		return new ArrayList<Trabajo>();
+//	}
 
 }

@@ -13,7 +13,6 @@ public class CSVReader {
 		String cvsSplitBy = ";";
 
 		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-			br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] items = line.split(cvsSplitBy);
 				output.add(items);

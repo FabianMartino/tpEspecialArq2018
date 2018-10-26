@@ -1,16 +1,17 @@
 package com.tpEspecialArq2018;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -27,19 +28,22 @@ public class Usuario implements Serializable {
 	@Column(nullable = false)
 	private String apellido;
 	
-	@ManyToMany//(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private List<Trabajo> trabajos;
+	@ManyToMany
+	@JoinTable(name="trabajo_usuario", 
+				joinColumns = {@JoinColumn(name="id_user")}, 
+				inverseJoinColumns = {@JoinColumn(name="id_trabajo")}
+	)
+	private List<Trabajo> trabajos  = new ArrayList<Trabajo>();
 	
-	@ManyToMany//(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany
 	private List<Palabra> palabras;
 	
-	@ManyToMany//(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private List<Rol> roles;
+	@ManyToMany
+	private List<Rol> roles = new ArrayList<Rol>();
 	
 	@ManyToOne
     @JoinColumn(name="lugar_id", nullable = false)
     private LugarDeTrabajo locacion;
-	
 	
 	@OneToMany(mappedBy="id_usuario")
 	private List<Evaluacion> evaluacion;
@@ -124,5 +128,15 @@ public class Usuario implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
+	public void addTrabajo(Trabajo t){
+		this.trabajos.add(t);
+	}
+	
+	public void addRol(Rol r){
+		//r.addUsuarios(this);
+		this.roles.add(r);
+	}
+	
 	
 }
