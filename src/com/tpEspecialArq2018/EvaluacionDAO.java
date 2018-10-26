@@ -1,5 +1,6 @@
 package com.tpEspecialArq2018;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -45,7 +46,22 @@ public class EvaluacionDAO implements DAO<Evaluacion,Long>{
 		entityManager.close();
 		return result;
 	}
+	
+	public List<Evaluacion> findEvaluador(Long id) {
+		EntityManager entityManager=EMF.createEntityManager();
+		TypedQuery<Evaluacion> query = entityManager.createQuery("SELECT p FROM Evaluacion p WHERE p.id_usuario="+id,Evaluacion.class);
+		List<Evaluacion> result = query.getResultList();
+		entityManager.close();
+		return result;
+	}
 
+	public List<Evaluacion> findEntreFechas(String desde, String hasta,Long id) {
+		EntityManager entityManager=EMF.createEntityManager();
+		TypedQuery<Evaluacion> query = entityManager.createQuery("SELECT p FROM Evaluacion p WHERE p.id_usuario="+id+" AND p.fecha BETWEEN '"+desde+"' AND '"+hasta+"'",Evaluacion.class);
+		List<Evaluacion> result = query.getResultList();
+		entityManager.close();
+		return result;
+	}
 	@Override
 	public boolean delete(Long id) {
 		EntityManager entityManager=EMF.createEntityManager();
