@@ -36,7 +36,11 @@ public class Usuario implements Serializable {
 	private List<Trabajo> trabajos  = new ArrayList<Trabajo>();
 	
 	@ManyToMany
-	private List<Palabra> palabras;
+	@JoinTable(name="palabra_usuario", 
+				joinColumns = {@JoinColumn(name="id_user")}, 
+				inverseJoinColumns = {@JoinColumn(name="id_palabra")}
+	)
+	private List<Palabra> palabras = new ArrayList<Palabra>();
 	
 	@ManyToMany
 	private List<Rol> roles = new ArrayList<Rol>();
@@ -137,6 +141,8 @@ public class Usuario implements Serializable {
 		//r.addUsuarios(this);
 		this.roles.add(r);
 	}
-	
+	public void addPalabra(Palabra p) {
+		this.palabras.add(p);
+		}
 	
 }

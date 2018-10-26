@@ -82,31 +82,17 @@ public class UsuarioDAO implements DAO<Usuario,Long>{
 		return result;
 		
 	}
-//	public List<Trabajo> findAllTrabajosAutorRevisorTema(int idAutor, int idEvaluador, int idTematica) {
-//		EntityManager entityManager = EMF.createEntityManager();
-//		Usuario autor = this.findById(idAutor);
-//		Usuario evaluador = this.findById(idEvaluador);
-//		
-//		TematicaDAO daoT = TematicaDAO.getInstance();
-//		Tematica tema = daoT .findById(idTematica);
-//		if(autor != null && evaluador != null && tema !=null) {
-//			Query query = entityManager.createNativeQuery(
-//					"SELECT * FROM trabajo t "
-//					+ "JOIN autor_trabajo aut ON t.id = aut.trabajo_id "
-//					+ "JOIN evaluador_trabajo et ON t.id = et.trabajo_id "
-//					+ "JOIN trabajo_tematica tt ON t.id = tt.Trabajo_id "
-//					+ "WHERE aut.autor_id = :idAutor " 
-//					+ "AND et.evaluador_id = :idEvaluador "
-//					+ "AND tt.temas_id = :idTematica", Trabajo.class);
-//			query.setParameter("idAutor", idAutor);
-//			query.setParameter("idEvaluador", idEvaluador);
-//			query.setParameter("idTematica", idTematica);
-//			if (!query.getResultList().isEmpty()) {
-//				return query.getResultList();
-//			}
-//		}
-//		System.out.println("La consulta no devolvio ningun resultado");
-//		return new ArrayList<Trabajo>();
-//	}
+	public List<Trabajo> findAllTrabajosAutorRevisorPalabra(Long idAutor, Long idEvaluador, Long idPalabra) {
+		EntityManager entityManager = EMF.createEntityManager();
+		if(idAutor != null && idEvaluador != null && idPalabra !=null) {
+			Query query = entityManager.createNativeQuery(		
+			"SELECT t.id_trabajo, t.titulo, t.category FROM Trabajo t, trabajo_usuario a, Evaluacion ev, Palabra_Trabajo pt WHERE t.id_trabajo = a.id_trabajo AND t.id_trabajo = ev.trabajo AND t.id_trabajo = pt.id_trabajo AND a.id_user ="+idAutor+" AND ev.usuario = "+idEvaluador+" AND pt.id_palabra ="+idPalabra, Trabajo.class);
+			if (!query.getResultList().isEmpty()) {
+				return query.getResultList();
+			}
+		}
+		System.out.println("La consulta no devolvio ningun resultado");
+		return new ArrayList<Trabajo>();
+	}
 
 }

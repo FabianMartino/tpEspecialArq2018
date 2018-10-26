@@ -32,6 +32,7 @@ public class TestRESTInterface {
 		crearEvaluaciones();
 		getTrabajosAutor();
 		getTrabajos();
+		getTrabajosAutorRevisor();
  	}
 	
 	public void crearTrabajos() throws ClientProtocolException, IOException {
@@ -90,12 +91,16 @@ public class TestRESTInterface {
 	public void crearPalabras() throws ClientProtocolException, IOException {
 		Palabra p1 = new Palabra("Palabra1", true);
 		p1 = PalabraDAO.getInstance().persist(p1);
+		this.palabras.add(p1);
 		Palabra p2 = new Palabra("Palabra2", false);
 		p2 = PalabraDAO.getInstance().persist(p2);
+		this.palabras.add(p2);
 		Palabra p3 = new Palabra("Palabra3", false);
 		p3 = PalabraDAO.getInstance().persist(p3);
+		this.palabras.add(p3);
 		Palabra p4 = new Palabra("Palabra4", true);
 		p4 = PalabraDAO.getInstance().persist(p4);		
+		this.palabras.add(p4);
 	}
 	
 	@Test
@@ -148,9 +153,10 @@ public class TestRESTInterface {
 	
 	public void getTrabajosAutorRevisor() {
 		System.out.println("Seleccionar trabajos de investigación de un autor y revisor en una determinada área de investigación utilizando consultas JPQL");
-		Usuario u = this.usuarios.get(0);
-		
-		
+		Usuario u1 = this.usuarios.get(0);
+		Usuario u2 = this.usuarios.get(1);
+		Palabra p = this.palabras.get(0);
+		System.out.println(UsuarioDAO.getInstance().findAllTrabajosAutorRevisorPalabra(u1.getId_user(), u2.getId_user(), p.getId()));
 	}
 	
 }

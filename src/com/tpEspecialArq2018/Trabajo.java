@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
@@ -28,7 +30,11 @@ public class Trabajo implements Serializable{
 	private List<Usuario> usuarios = new ArrayList<Usuario>();
 	
 	@ManyToMany
-	private List<Palabra> palabras;
+	@JoinTable(name="palabra_trabajo", 
+			joinColumns = {@JoinColumn(name="id_trabajo")}, 
+			inverseJoinColumns = {@JoinColumn(name="id_palabra")}
+	)
+	private List<Palabra> palabras = new ArrayList<Palabra>();
 	 
 	@OneToMany(mappedBy="id_trabajo")
     private List<Evaluacion> evaluaciones;
@@ -68,8 +74,11 @@ public class Trabajo implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Trabajo [titulo=" + titulo + "]";
+		return "Trabajo [titulo=" + titulo + ", categoria=" + category + "]";
 	}
-
+	
+	public void addPalabra(Palabra p) {
+		this.palabras.add(p);
+	}
 	
 }

@@ -1,6 +1,7 @@
 package com.tpEspecialArq2018;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -26,11 +27,11 @@ public class Palabra implements Serializable{
 	private boolean isSpecific;
 	
 	@ManyToMany(mappedBy ="palabras")
-    private List<Usuario> usuarios;
+    private List<Usuario> usuarios = new ArrayList<Usuario>();
 	
 
 	@ManyToMany(mappedBy ="palabras")
-    private List<Trabajo> trabajos;
+    private List<Trabajo> trabajos = new ArrayList<Trabajo>();
 
 	
 	public Palabra() {
