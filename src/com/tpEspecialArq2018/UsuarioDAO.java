@@ -85,7 +85,7 @@ public class UsuarioDAO implements DAO<Usuario,Long>{
 	public List<Trabajo> findAllTrabajosAutorRevisorPalabra(Long idAutor, Long idEvaluador, Long idPalabra) {
 		EntityManager entityManager = EMF.createEntityManager();
 		if(idAutor != null && idEvaluador != null && idPalabra !=null) {
-			Query query = entityManager.createNativeQuery(		
+			TypedQuery<Trabajo> query = entityManager.createQuery(		
 			"SELECT t.id_trabajo, t.titulo, t.category FROM Trabajo t, trabajo_usuario a, Evaluacion ev, Palabra_Trabajo pt WHERE t.id_trabajo = a.id_trabajo AND t.id_trabajo = ev.trabajo AND t.id_trabajo = pt.id_trabajo AND a.id_user ="+idAutor+" AND ev.usuario = "+idEvaluador+" AND pt.id_palabra ="+idPalabra, Trabajo.class);
 			if (!query.getResultList().isEmpty()) {
 				return query.getResultList();
