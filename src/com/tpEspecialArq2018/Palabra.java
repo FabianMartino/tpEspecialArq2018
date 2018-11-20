@@ -9,8 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -35,7 +33,7 @@ public class Palabra implements Serializable{
 
 	@ManyToMany(mappedBy ="palabras")
 	@JsonIgnore
-    private List<Trabajo> trabajos = new ArrayList<Trabajo>();
+	private List<Trabajo> trabajos = new ArrayList<Trabajo>();
 
 	
 	public Palabra() {

@@ -9,7 +9,7 @@
 		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
 		<init-param>
 			<param-name>jersey.config.server.provider.packages</param-name>
-			<param-value>com.tpEspecialArq2018</param-value>
+			<param-value>WebServices</param-value>
 		</init-param>
 		
 	</servlet>
@@ -17,8 +17,6 @@
 	<servlet-mapping>
 		<servlet-name>MiServicioREST</servlet-name>
 		<url-pattern>/api/*</url-pattern>
-	</servlet-mapping>
-	
-	
+	</servlet-mapping>	
 
 </web-app>
