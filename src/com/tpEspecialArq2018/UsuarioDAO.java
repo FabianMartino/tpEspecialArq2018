@@ -83,16 +83,20 @@ public class UsuarioDAO implements DAO<Usuario,Long>{
 		
 	}
 	public List<Trabajo> findAllTrabajosAutorRevisorPalabra(Long idAutor, Long idEvaluador, Long idPalabra) {
-		EntityManager entityManager = EMF.createEntityManager();
-		if(idAutor != null && idEvaluador != null && idPalabra !=null) {
-			TypedQuery<Trabajo> query = entityManager.createQuery(		
-			"SELECT t.id_trabajo, t.titulo, t.category FROM Trabajo t, trabajo_usuario a, Evaluacion ev, Palabra_Trabajo pt WHERE t.id_trabajo = a.id_trabajo AND t.id_trabajo = ev.trabajo AND t.id_trabajo = pt.id_trabajo AND a.id_user ="+idAutor+" AND ev.usuario = "+idEvaluador+" AND pt.id_palabra ="+idPalabra, Trabajo.class);
-			if (!query.getResultList().isEmpty()) {
-				return query.getResultList();
-			}
-		}
-		System.out.println("La consulta no devolvio ningun resultado");
-		return new ArrayList<Trabajo>();
+		EntityManager entityManager=EMF.createEntityManager();
+		Query query = entityManager.createQuery(		
+		"SELECT t "
+		+ "FROM Trabajo t "
+		+ "JOIN t.usuarios a "
+		+ "JOIN t.evaluaciones ev "
+		+ "JOIN t.palabras pt "
+		+ "WHERE a.id_user =:idAutor AND ev.id_usuario.id_user = :idEvaluador AND pt.id_palabra = :idPalabra");
+		query.setParameter("idAutor", idAutor);
+		query.setParameter("idEvaluador", idEvaluador);
+		query.setParameter("idPalabra", idPalabra);
+		 List<Trabajo> result = query.getResultList();
+		entityManager.close();
+		return result;
 	}
 
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +16,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Usuario implements Serializable {
@@ -28,14 +31,14 @@ public class Usuario implements Serializable {
 	@Column(nullable = false)
 	private String apellido;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name="trabajo_usuario", 
 				joinColumns = {@JoinColumn(name="id_user")}, 
 				inverseJoinColumns = {@JoinColumn(name="id_trabajo")}
 	)
 	private List<Trabajo> trabajos  = new ArrayList<Trabajo>();
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name="palabra_usuario", 
 				joinColumns = {@JoinColumn(name="id_user")}, 
 				inverseJoinColumns = {@JoinColumn(name="id_palabra")}
@@ -43,6 +46,7 @@ public class Usuario implements Serializable {
 	private List<Palabra> palabras = new ArrayList<Palabra>();
 	
 	@ManyToMany
+	@JsonIgnore
 	private List<Rol> roles = new ArrayList<Rol>();
 	
 	@ManyToOne

@@ -1,13 +1,20 @@
 package com.tpEspecialArq2018;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Test;
 import com.tpEspecialArq2018.Usuario;
 import com.tpEspecialArq2018.UsuarioDAO;
@@ -15,6 +22,11 @@ import com.tpEspecialArq2018.UsuarioDAO;
 import utils.CSVReader;
 
 public class TestRESTInterface {
+	
+	public final String BASE_URL="http://localhost:8080/tpEspecialArq2018/api";
+
+	public final HttpClient client = HttpClientBuilder.create().build();
+	
 	ArrayList<LugarDeTrabajo> lugaresDeTrabajo = new ArrayList<LugarDeTrabajo>();
 	ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 	ArrayList<Trabajo> trabajos = new ArrayList<Trabajo>();
@@ -26,9 +38,9 @@ public class TestRESTInterface {
 	public void testRESTInterface() throws ClientProtocolException, IOException, ParseException {
 		crearRoles();
 		crearLugaresDeTrabajos();
+		crearPalabras();
 		crearTrabajos();
 		crearUsuarios();
-		crearPalabras();
 		crearEvaluaciones();
 		getTrabajosAutor();
 		getTrabajos();
@@ -39,6 +51,7 @@ public class TestRESTInterface {
 		ArrayList<String[]> trabajos = CSVReader.read("src/datasets/trabajos.csv");
 		for (String[] trabajo : trabajos) {
 			Trabajo t = new Trabajo(trabajo[0], trabajo[1]);
+			t.addPalabra(this.palabras.get(0));
 			this.trabajos.add(t);
 			t = TrabajoDAO.getInstance().persist(t);
 		}
@@ -60,7 +73,8 @@ public class TestRESTInterface {
 		for (String[] usuario : usuarios) {
 			Usuario u = new Usuario(usuario[0], usuario[1], lugaresDeTrabajo.get(index++));
 			u.addRol(this.roles.get(1/index));
-			u.addTrabajo(this.trabajos.get(index));
+			u.addTrabajo(this.trabajos.get(index-1));
+			u.addPalabra(this.palabras.get(0));
 			this.usuarios.add(u);
 			UsuarioDAO.getInstance().persist(u);
 		}
@@ -75,7 +89,7 @@ public class TestRESTInterface {
 			Evaluacion e = new Evaluacion(usuarios.get(i),trabajos.get(i), date,Integer.parseInt(evaluacion[1]));
 			this.evaluaciones.add(e);
 			e = EvaluacionDAO.getInstance().persist(e);
-		//	i++;
+			i++;
 		}
 	}
 	
@@ -154,9 +168,50 @@ public class TestRESTInterface {
 	public void getTrabajosAutorRevisor() {
 		System.out.println("Seleccionar trabajos de investigación de un autor y revisor en una determinada área de investigación utilizando consultas JPQL");
 		Usuario u1 = this.usuarios.get(0);
-		Usuario u2 = this.usuarios.get(1);
+		Usuario u2 = this.usuarios.get(0);
 		Palabra p = this.palabras.get(0);
-		System.out.println(UsuarioDAO.getInstance().findAllTrabajosAutorRevisorPalabra(u1.getId_user(), u2.getId_user(), p.getId()));
+		List<Trabajo> result = UsuarioDAO.getInstance().findAllTrabajosAutorRevisorPalabra(u1.getId_user(), u2.getId_user(), p.getId());
+		if(!result.isEmpty()) {
+			for (Trabajo trabajo : result) {
+				System.out.println(trabajo);
+			}
+		}
+		else {
+			System.out.println("no se encotraron resultados");
+		}
+	}
+	@Test
+	public void getUser() throws ClientProtocolException, IOException {
+
+		String url = BASE_URL + "/users/30";
+
+		HttpGet request = new HttpGet(url);
+
+		HttpResponse response = client.execute(request);
+		
+		
+		System.out.println("\nGET "+url);
+
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+
+		String resultContent = getResultContent(response);
+
+		System.out.println("Response Content : " + resultContent);
+
+	}
+	private String getResultContent(HttpResponse response) throws IOException {
+		HttpEntity entity = response.getEntity();
+		if(entity!=null) {
+			BufferedReader rd = new BufferedReader(new InputStreamReader(entity.getContent()));
+			StringBuffer result = new StringBuffer();
+			String line = "";
+			while ((line = rd.readLine()) != null) {
+				result.append(line);
+			}
+			return result.toString();
+		}else {
+			return "";
+		}
 	}
 	
 }

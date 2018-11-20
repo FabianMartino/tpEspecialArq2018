@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 public class Palabra implements Serializable{
@@ -27,10 +29,12 @@ public class Palabra implements Serializable{
 	private boolean isSpecific;
 	
 	@ManyToMany(mappedBy ="palabras")
+	@JsonIgnore
     private List<Usuario> usuarios = new ArrayList<Usuario>();
 	
 
 	@ManyToMany(mappedBy ="palabras")
+	@JsonIgnore
     private List<Trabajo> trabajos = new ArrayList<Trabajo>();
 
 	
