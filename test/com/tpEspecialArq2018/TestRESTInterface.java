@@ -14,6 +14,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Test;
 import com.tpEspecialArq2018.Usuario;
@@ -139,7 +140,7 @@ public class TestRESTInterface {
 		System.out.println("evaluaciones realizadas en una entre dos fechas por un autors");
 		List<Usuario> u = UsuarioDAO.getInstance().findAll();
 		System.out.println("evaluador:" + UsuarioDAO.getInstance().getUserData(u.get(0).getId_user()));
-		List<Evaluacion> e = EvaluacionDAO.getInstance().findEntreFechas("2011-02-01", "2012-01-01", u.get(0).getId_user());
+		List<Evaluacion> e = EvaluacionDAO.getInstance().findEntreFechas("2010-02-01", "2012-01-01", u.get(0).getId_user());
 		System.out.println("evaluaciones:");
 		for (Evaluacion evaluacion : e) {
 			System.out.println(evaluacion.toString());
@@ -194,24 +195,19 @@ public class TestRESTInterface {
 
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 
-		String resultContent = getResultContent(response);
+	}
+	@Test
+	public void createUser() throws ClientProtocolException, IOException {
+		String url = BASE_URL + "/users";
 
-		System.out.println("Response Content : " + resultContent);
+		HttpPost request = new HttpPost(url);
+
+		HttpResponse response = client.execute(request);
+		
+		
+		System.out.println("\nPOST "+url);
+
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 
 	}
-	private String getResultContent(HttpResponse response) throws IOException {
-		HttpEntity entity = response.getEntity();
-		if(entity!=null) {
-			BufferedReader rd = new BufferedReader(new InputStreamReader(entity.getContent()));
-			StringBuffer result = new StringBuffer();
-			String line = "";
-			while ((line = rd.readLine()) != null) {
-				result.append(line);
-			}
-			return result.toString();
-		}else {
-			return "";
-		}
-	}
-	
 }

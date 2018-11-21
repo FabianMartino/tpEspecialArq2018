@@ -19,10 +19,9 @@ public class UserServices {
 	@GET
 	@Path("/{id}")
 	@Produces (MediaType.APPLICATION_JSON) 
-	public Usuario getUserData(@PathParam("id") String id) {
-		System.out.println("entro a get user: ");
+	public String getUserData(@PathParam("id") String id) {
 		Long idUser = Long.parseLong(id);	    
-		Usuario user = UsuarioDAO.getInstance().findById(idUser); 
+		String user = UsuarioDAO.getInstance().getUserData(idUser); 
 		return user;
 	}
 	
