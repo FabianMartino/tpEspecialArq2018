@@ -15,8 +15,14 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Test;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tpEspecialArq2018.Usuario;
 import com.tpEspecialArq2018.UsuarioDAO;
 
@@ -43,9 +49,9 @@ public class TestRESTInterface {
 		crearTrabajos();
 		crearUsuarios();
 		crearEvaluaciones();
-		getTrabajosAutor();
-		getTrabajos();
-		getTrabajosAutorRevisor();
+//		getTrabajosAutor();
+//		getTrabajos();
+//		getTrabajosAutorRevisor();
  	}
 	
 	public void crearTrabajos() throws ClientProtocolException, IOException {
@@ -118,13 +124,13 @@ public class TestRESTInterface {
 		this.palabras.add(p4);
 	}
 	
-	@Test
+//	@Test
 	public void getUserData(){
 		System.out.println("Test user data:");
 		List<Usuario> u = UsuarioDAO.getInstance().findAll();	
 		System.out.println(UsuarioDAO.getInstance().getUserData(u.get(0).getId_user()));
 	}
-	@Test
+//	@Test
 	public void trabajosAsignados() {
 		System.out.println("trabajos asignados a un evaluador");
 		List<Usuario> u = UsuarioDAO.getInstance().findAll();
@@ -135,7 +141,7 @@ public class TestRESTInterface {
 			System.out.println(evaluacion);
 		}		
 	}
-	@Test
+//	@Test
 	public void fechaEvaluados() {
 		System.out.println("evaluaciones realizadas en una entre dos fechas por un autors");
 		List<Usuario> u = UsuarioDAO.getInstance().findAll();
@@ -200,12 +206,59 @@ public class TestRESTInterface {
 	public void createUser() throws ClientProtocolException, IOException {
 		String url = BASE_URL + "/users";
 
-		HttpPost request = new HttpPost(url);
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode jsonObject = mapper.createObjectNode();
+		jsonObject.put("nombre", "Roque");
+		jsonObject.put("apellido", "Callejero");
+		String jsonString = jsonObject.toString();
 
-		HttpResponse response = client.execute(request);
+		HttpPost post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		HttpResponse response = client.execute(post);
 		
 		
 		System.out.println("\nPOST "+url);
+
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+
+	}
+	
+	@Test
+	public void createTrabajo() throws ClientProtocolException, IOException {
+		String url = BASE_URL + "/trabajos";
+
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode jsonObject = mapper.createObjectNode();
+		jsonObject.put("titulo", "Titulo 20");
+		jsonObject.put("category", "Poster");
+		String jsonString = jsonObject.toString();
+
+		HttpPost post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		HttpResponse response = client.execute(post);
+		
+		
+		System.out.println("\nPOST "+url);
+
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+
+	}
+	@Test
+	public void editUser() throws ClientProtocolException, IOException {
+		String url = BASE_URL + "/users/32";
+
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode jsonObject = mapper.createObjectNode();
+		jsonObject.put("nombre", "jose");
+		jsonObject.put("apellido", "cambio");
+		String jsonString = jsonObject.toString();
+
+		HttpPut put = new HttpPut(url);
+		put.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		HttpResponse response = client.execute(put);
+		
+		
+		System.out.println("\nPUT "+url);
 
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 

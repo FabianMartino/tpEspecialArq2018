@@ -65,11 +65,16 @@ public class UsuarioDAO implements DAO<Usuario,Long>{
 	}
 
 	@Override
-	public Usuario update(Long id, Usuario entity) {
+	public Usuario update(Long id, Usuario entity) {	
+		Usuario usuario = findById(id);
+		usuario.setApellido(entity.getApellido());
+		usuario.setNombre(entity.getNombre());
 		EntityManager entityManager=EMF.createEntityManager();
-		TypedQuery<Usuario> query = entityManager.createQuery("UPDATE Usuario p SET p.nombre = "+entity.getNombre()+" WHERE p.id = "+id+"",Usuario.class);
+		entityManager.getTransaction().begin();
+		entityManager.merge(usuario);
+		entityManager.getTransaction().commit();
 		entityManager.close();
-		return entity;	
+		return usuario;
 	}
 	
 	public List<Trabajo> getTrabajos(Long id, String categoria) {
