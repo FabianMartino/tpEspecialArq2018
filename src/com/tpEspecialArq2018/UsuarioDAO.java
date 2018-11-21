@@ -72,7 +72,7 @@ public class UsuarioDAO implements DAO<Usuario,Long>{
 		return entity;	
 	}
 	
-	public List<Trabajo> getTrabajos(Long id, String categoria) {
+	public List<Trabajo> getTrabajos(Long id) {
 		
 		EntityManager entityManager=EMF.createEntityManager();
 		TypedQuery<Trabajo> query = entityManager.createQuery(

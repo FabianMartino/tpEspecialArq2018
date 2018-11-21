@@ -1,5 +1,7 @@
 package WebServices;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -11,13 +13,12 @@ import javax.ws.rs.core.MediaType;
 import com.tpEspecialArq2018.Trabajo;
 import com.tpEspecialArq2018.TrabajoDAO;
 
-@Path("/trabajos")
+@Path("/trabajo")
 public class TrabajoServices {
 
 	@POST @Consumes(MediaType.APPLICATION_JSON) @Produces(MediaType.APPLICATION_JSON)
-	public void createTrabajo() {
-		System.out.println("entro a create trabajo: ");
-		Trabajo tr =  new Trabajo("Titulo", "categoria");
+	public void createTrabajo(@PathParam("titulo") String pTitulo, @PathParam("categoria") String pCategoria ) {
+		Trabajo tr =  new Trabajo(pTitulo, pCategoria);
 		TrabajoDAO.getInstance().persist(tr);
 	}
 	
@@ -25,10 +26,18 @@ public class TrabajoServices {
 	@Path("/{id}")
 	@Produces (MediaType.APPLICATION_JSON) 
 	public Trabajo getTrabajo(@PathParam("id") String id) {
-		System.out.println("entro a get trabajo: ");
 		Long idTrab = Long.parseLong(id);	    
 		Trabajo tr = TrabajoDAO.getInstance().findById(idTrab); 
 		return tr;
 	}
-
+	
+	@GET
+	@Path("/todosTrabajos")
+	@Produces (MediaType.APPLICATION_JSON) 
+	public List<Trabajo> getTrabajos() {
+		List<Trabajo> tr = TrabajoDAO.getInstance().findAll(); 
+		return tr;
+	}
+	
+	
 }
