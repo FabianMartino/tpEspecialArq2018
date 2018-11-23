@@ -66,4 +66,23 @@ public class TrabajoDAO implements DAO<Trabajo,Long>{
 //		entityManager.close();
 		return entity;	
 	}
+	public List<Evaluacion> EvaluacionesTrabajo(long id) {
+		EntityManager entityManager=EMF.createEntityManager();
+		TypedQuery<Evaluacion> query = entityManager.createQuery("SELECT e FROM Evaluacion e WHERE e.id_trabajo = "+ id,Evaluacion.class);
+		List<Evaluacion> result = query.getResultList();
+		entityManager.close();
+		return result;
+	}
+	public List<Usuario> autores(long id) {
+		EntityManager entityManager=EMF.createEntityManager();
+		Query query = entityManager.createQuery(		
+				"SELECT u "
+				+ "FROM Usuario u "
+				+ "JOIN u.trabajos a "
+				+ "WHERE a.id_trabajo =:id");
+				query.setParameter("id", id);
+		List<Usuario>result = query.getResultList();
+		entityManager.close();
+		return result;
+	}
 }

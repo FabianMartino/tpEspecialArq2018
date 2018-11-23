@@ -84,5 +84,4 @@ public class Trabajo implements Serializable{
 	public void addPalabra(Palabra p) {
 		this.palabras.add(p);
 	}
-	
 }

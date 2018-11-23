@@ -52,6 +52,11 @@ public class TestRESTInterface {
 //		getTrabajosAutor();
 //		getTrabajos();
 //		getTrabajosAutorRevisor();
+//		createUser();
+//		createTrabajo();
+//		editUser();
+		asignarTrabajo();
+		trabajoAutor();
  	}
 	
 	public void crearTrabajos() throws ClientProtocolException, IOException {
@@ -222,7 +227,6 @@ public class TestRESTInterface {
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 
 	}
-	
 	@Test
 	public void createTrabajo() throws ClientProtocolException, IOException {
 		String url = BASE_URL + "/trabajos";
@@ -259,6 +263,38 @@ public class TestRESTInterface {
 		
 		
 		System.out.println("\nPUT "+url);
+
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+	}
+	
+	public void asignarTrabajo() throws ClientProtocolException, IOException {
+		String url = BASE_URL + "/evaluaciones/30/18";
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode jsonObject = mapper.createObjectNode();
+		jsonObject.put("fecha","2018-11-22" );
+		jsonObject.put("nota", "9");
+		String jsonString = jsonObject.toString();
+
+		HttpPost post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		HttpResponse response = client.execute(post);
+		
+		
+		System.out.println("\nPOST "+url);
+
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+	}	
+//	@Test
+	public void trabajoAutor() throws ClientProtocolException, IOException {
+
+		String url = BASE_URL + "/users/trabajos/30";
+
+		HttpGet request = new HttpGet(url);
+
+		HttpResponse response = client.execute(request);
+		
+		
+		System.out.println("\nGET "+url);
 
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 

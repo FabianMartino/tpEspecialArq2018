@@ -93,7 +93,7 @@ public class UserServices {
 	public List<Trabajo> getTrabajosAutor(@PathParam("idUser") String idU){
 		System.out.println("Dado un autor, retornar todos los trabajos de investigación enviados");
 		Long idUser = Long.parseLong(idU);	    
-		List<Trabajo> trabajos = UsuarioDAO.getInstance().getTrabajos(idUser,idU);
+		List<Trabajo> trabajos = UsuarioDAO.getInstance().getTrabajos(idUser);
 		return trabajos;
 	}
 
@@ -139,5 +139,13 @@ public class UserServices {
 	         super(Response.status(Response.Status.NOT_FOUND)
 	             .entity("El recurso con id "+id+" no fue encontrado").type(MediaType.TEXT_PLAIN).build());
 	     }
+	}
+	@GET
+	@Path("/trabajos/{id}")
+	@Produces (MediaType.APPLICATION_JSON) 
+	public List<Trabajo> trabajosAutor(@PathParam("id") String id) {
+		Long idUser = Long.parseLong(id);	    
+		List<Trabajo> trab = UsuarioDAO.getInstance().getTrabajos(idUser); 
+		return trab;
 	}
 }

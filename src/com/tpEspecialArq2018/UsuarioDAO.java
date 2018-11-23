@@ -77,11 +77,15 @@ public class UsuarioDAO implements DAO<Usuario,Long>{
 		return usuario;
 	}
 	
-	public List<Trabajo> getTrabajos(Long id, String categoria) {
+	public List<Trabajo> getTrabajos(Long id) {
 		
 		EntityManager entityManager=EMF.createEntityManager();
-		TypedQuery<Trabajo> query = entityManager.createQuery(
-				"SELECT u FROM Usuario u WHERE u.id_user =" + id + " JOIN Trabajo t ON t.id_trabajo=u.id_user" ,Trabajo.class);
+		Query query = entityManager.createQuery(		
+		"SELECT t "
+		+ "FROM Trabajo t "
+		+ "JOIN t.usuarios a "
+		+ "WHERE a.id_user =:id");
+		query.setParameter("id", id);
 		List<Trabajo> result = query.getResultList();
 		entityManager.close();
 		return result;
@@ -103,5 +107,11 @@ public class UsuarioDAO implements DAO<Usuario,Long>{
 		entityManager.close();
 		return result;
 	}
-
+	public List<Evaluacion> EvaluacionesRevisor(long id) {
+		EntityManager entityManager=EMF.createEntityManager();
+		TypedQuery<Evaluacion> query = entityManager.createQuery("SELECT e FROM Evaluacion e WHERE e.id_usuario = "+ id,Evaluacion.class);
+		List<Evaluacion> result = query.getResultList();
+		entityManager.close();
+		return result;
+	}
 }
