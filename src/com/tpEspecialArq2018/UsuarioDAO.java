@@ -114,4 +114,18 @@ public class UsuarioDAO implements DAO<Usuario,Long>{
 		entityManager.close();
 		return result;
 	}
+	public List<Trabajo> findAllTrabajosAutorRevisorFecha(Long idRevisor, String desde, String hasta) {
+		EntityManager entityManager=EMF.createEntityManager();
+		Query query = entityManager.createQuery(		
+		"SELECT t "
+		+ "FROM Trabajo t "
+		+ "JOIN t.evaluaciones ev "
+		+ "WHERE ev.id_usuario.id_user = :idRevisor AND ev.fecha BETWEEN ':desde' AND ':hasta'");
+		query.setParameter("idRevisor", idRevisor);
+		query.setParameter("desde", desde);
+		query.setParameter("hasta", hasta);
+		 List<Trabajo> result = query.getResultList();
+		entityManager.close();
+		return result;
+	}
 }

@@ -36,9 +36,10 @@ public class TestRESTInterface {
 	
 	ArrayList<LugarDeTrabajo> lugaresDeTrabajo = new ArrayList<LugarDeTrabajo>();
 	ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
-	ArrayList<Trabajo> trabajos = new ArrayList<Trabajo>();
 	ArrayList<Palabra> palabras = new ArrayList<Palabra>();
 	ArrayList<Evaluacion> evaluaciones = new ArrayList<Evaluacion>();
+	ArrayList<Trabajo> trabajos = new ArrayList<Trabajo>();
+
 	ArrayList<Rol> roles = new ArrayList<Rol>();
 	
 	@Test
@@ -55,8 +56,8 @@ public class TestRESTInterface {
 //		createUser();
 //		createTrabajo();
 //		editUser();
-		asignarTrabajo();
-		trabajoAutor();
+	//	asignarTrabajo();
+	//	trabajoAutor();
  	}
 	
 	public void crearTrabajos() throws ClientProtocolException, IOException {
@@ -192,7 +193,7 @@ public class TestRESTInterface {
 			System.out.println("no se encotraron resultados");
 		}
 	}
-	@Test
+//	@Test
 	public void getUser() throws ClientProtocolException, IOException {
 
 		String url = BASE_URL + "/users/30";
@@ -266,7 +267,7 @@ public class TestRESTInterface {
 
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 	}
-	
+//	@Test
 	public void asignarTrabajo() throws ClientProtocolException, IOException {
 		String url = BASE_URL + "/evaluaciones/30/18";
 		ObjectMapper mapper = new ObjectMapper();
@@ -284,7 +285,7 @@ public class TestRESTInterface {
 
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 	}	
-//	@Test
+	@Test
 	public void trabajoAutor() throws ClientProtocolException, IOException {
 
 		String url = BASE_URL + "/users/trabajos/30";
@@ -299,4 +300,20 @@ public class TestRESTInterface {
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 
 	}
+	@Test
+	public void trabajoAutorFecha()throws ClientProtocolException, IOException {
+
+		String url = BASE_URL + "/users/trabajos/30/2010-02-01/2019-11-22";
+
+		HttpGet request = new HttpGet(url);
+
+		HttpResponse response = client.execute(request);
+		
+		
+		System.out.println("\nGET "+url);
+
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+
+	}
+
 }

@@ -87,31 +87,31 @@ public class UserServices {
 			return simpleDateFormat.parse(fecha);
     }
 	
-	@GET
-	@Path("evaluaciones/{idUser}")
-	@Produces (MediaType.APPLICATION_JSON) 
-	public List<Trabajo> getTrabajosAutor(@PathParam("idUser") String idU){
-		System.out.println("Dado un autor, retornar todos los trabajos de investigación enviados");
-		Long idUser = Long.parseLong(idU);	    
-		List<Trabajo> trabajos = UsuarioDAO.getInstance().getTrabajos(idUser);
-		return trabajos;
-	}
+//	@GET
+//	@Path("evaluaciones/{idUser}")
+//	@Produces (MediaType.APPLICATION_JSON) 
+//	public List<Trabajo> getTrabajosAutor(@PathParam("idUser") String idU){
+//		System.out.println("Dado un autor, retornar todos los trabajos de investigación enviados");
+//		Long idUser = Long.parseLong(idU);	    
+//		List<Trabajo> trabajos = UsuarioDAO.getInstance().getTrabajos(idUser);
+//		return trabajos;
+//	}
 
-	@GET
-	@Path("trabajo/{idAutor}/{idEvaluador}/idPalabra")
-	@Produces (MediaType.APPLICATION_JSON) 
-	public List<Trabajo> getTrabajosAutorRevisor(
-			@PathParam("idAutor") String idAutor, 
-			@PathParam("idEvaluador") String idEvaluador,
-			@PathParam("idPalabra") String idPalabra) {
-		System.out.println("Seleccionar trabajos de investigación de un autor y revisor en una determinada área de investigación.");
-		Long idUsuario = Long.parseLong(idAutor);	    
-		Long idEv = Long.parseLong(idEvaluador);	    
-		Long idP = Long.parseLong(idPalabra);	    
-		
-		List<Trabajo> trabajos = UsuarioDAO.getInstance().findAllTrabajosAutorRevisorPalabra(idUsuario, idEv, idP); 
-		return trabajos;
-	}
+////	@GET
+////	@Path("trabajo/{idAutor}/{idEvaluador}/idPalabra")
+////	@Produces (MediaType.APPLICATION_JSON) 
+////	public List<Trabajo> getTrabajosAutorRevisor(
+////			@PathParam("idAutor") String idAutor, 
+////			@PathParam("idEvaluador") String idEvaluador,
+////			@PathParam("idPalabra") String idPalabra) {
+////		System.out.println("Seleccionar trabajos de investigación de un autor y revisor en una determinada área de investigación.");
+////		Long idUsuario = Long.parseLong(idAutor);	    
+////		Long idEv = Long.parseLong(idEvaluador);	    
+////		Long idP = Long.parseLong(idPalabra);	    
+////		
+//		List<Trabajo> trabajos = UsuarioDAO.getInstance().findAllTrabajosAutorRevisorPalabra(idUsuario, idEv, idP); 
+//		return trabajos;
+//	}
 
 	@PUT
 	@Path("/{id}")
@@ -143,9 +143,17 @@ public class UserServices {
 	@GET
 	@Path("/trabajos/{id}")
 	@Produces (MediaType.APPLICATION_JSON) 
-	public List<Trabajo> trabajosAutor(@PathParam("id") String id) {
+	public List<Trabajo> getTrabajosAutor(@PathParam("id") String id) {
 		Long idUser = Long.parseLong(id);	    
 		List<Trabajo> trab = UsuarioDAO.getInstance().getTrabajos(idUser); 
+		return trab;
+	}
+	@GET
+	@Path("/trabajos/{id}/{desde}/{hasta}")
+	@Produces (MediaType.APPLICATION_JSON) 
+	public List<Trabajo> getTrabajosAutorFecha(@PathParam("id") String id,@PathParam("desde") String desde,@PathParam("hasta") String hasta) {
+		Long idUser = Long.parseLong(id);	    
+		List<Trabajo> trab = UsuarioDAO.getInstance().findAllTrabajosAutorRevisorFecha(idUser, desde, hasta); 
 		return trab;
 	}
 }
