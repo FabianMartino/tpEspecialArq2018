@@ -120,10 +120,10 @@ public class UsuarioDAO implements DAO<Usuario,Long>{
 		"SELECT t "
 		+ "FROM Trabajo t "
 		+ "JOIN t.evaluaciones ev "
-		+ "WHERE ev.id_usuario.id_user = :idRevisor AND ev.fecha BETWEEN ':desde' AND ':hasta'");
+		+ "WHERE ev.id_usuario.id_user = :idRevisor AND ev.fecha BETWEEN '"+desde+"' AND '"+hasta+"'");
 		query.setParameter("idRevisor", idRevisor);
-		query.setParameter("desde", desde);
-		query.setParameter("hasta", hasta);
+//		query.setParameter("desde", desde);
+//		query.setParameter("hasta", hasta);
 		 List<Trabajo> result = query.getResultList();
 		entityManager.close();
 		return result;

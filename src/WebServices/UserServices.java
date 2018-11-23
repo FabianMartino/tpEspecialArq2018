@@ -149,7 +149,7 @@ public class UserServices {
 		return trab;
 	}
 	@GET
-	@Path("/trabajos/{id}/{desde}/{hasta}")
+	@Path("/evaluaciones/{id}/{desde}/{hasta}")
 	@Produces (MediaType.APPLICATION_JSON) 
 	public List<Trabajo> getTrabajosAutorFecha(@PathParam("id") String id,@PathParam("desde") String desde,@PathParam("hasta") String hasta) {
 		Long idUser = Long.parseLong(id);	    

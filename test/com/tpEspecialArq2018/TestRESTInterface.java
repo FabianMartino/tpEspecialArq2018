@@ -267,19 +267,11 @@ public class TestRESTInterface {
 
 		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 	}
-//	@Test
+	@Test
 	public void asignarTrabajo() throws ClientProtocolException, IOException {
-		String url = BASE_URL + "/evaluaciones/30/18";
-		ObjectMapper mapper = new ObjectMapper();
-		ObjectNode jsonObject = mapper.createObjectNode();
-		jsonObject.put("fecha","2018-11-22" );
-		jsonObject.put("nota", "9");
-		String jsonString = jsonObject.toString();
-
+		String url = BASE_URL + "/evaluaciones/asignar/30/18/2018-11-22/9";
 		HttpPost post = new HttpPost(url);
-		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
 		HttpResponse response = client.execute(post);
-		
 		
 		System.out.println("\nPOST "+url);
 
@@ -303,7 +295,7 @@ public class TestRESTInterface {
 	@Test
 	public void trabajoAutorFecha()throws ClientProtocolException, IOException {
 
-		String url = BASE_URL + "/users/trabajos/30/2010-02-01/2019-11-22";
+		String url = BASE_URL + "/users/evaluaciones/30/2010-02-01/2019-11-22";
 
 		HttpGet request = new HttpGet(url);
 

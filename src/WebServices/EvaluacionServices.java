@@ -1,5 +1,6 @@
 package WebServices;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -46,9 +47,9 @@ public class EvaluacionServices {
 	}
 	
 	@POST
-	@Path("/{idUser}/{idTrab}")
+	@Path("/asignar/{idUser}/{idTrab}/{fecha}/{nota}")
 	@Consumes(MediaType.APPLICATION_JSON) @Produces(MediaType.APPLICATION_JSON)
-	public Response asignarEvaluacion(Evaluacion e,@PathParam("idUser") long idUser,@PathParam("idTrab") long idTrab) {
+	public Response asignarEvaluacion(@PathParam("idUser") long idUser,@PathParam("idTrab") long idTrab,@PathParam("fecha") Date fecha,@PathParam("nota") int nota) {
 		Trabajo t = TrabajoDAO.getInstance().findById(idTrab);
 		Usuario u = UsuarioDAO.getInstance().findById(idUser);
 		List<Evaluacion> evaTrabajo = TrabajoDAO.getInstance().EvaluacionesTrabajo(idTrab);
@@ -61,10 +62,15 @@ public class EvaluacionServices {
 			}
 		}
 		if(evaTrabajo.size()<3 && evaUsuario.size()<3 && !condicionAutor ) {
-			Evaluacion eva = new Evaluacion(u, t, e.getFecha(), e.getNota());
-			return createEvaluacion(eva);
+			Evaluacion eva = new Evaluacion(u, t, fecha, nota);
+			Evaluacion result= EvaluacionDAO.getInstance().persist(eva);
+			if(result==null) {
+				throw new RecursoDuplicado(eva.getId());
+			}else {
+				return Response.status(201).entity(eva).build();
+			}	
 		}else {
-			throw new RecursoErroneo();
+			throw new RecursoNoExiste(u.getId_user());
 		}	
 	}
 	
@@ -82,10 +88,4 @@ public class EvaluacionServices {
 	     }
 	}
 	
-	public class RecursoErroneo extends WebApplicationException {
-	     public RecursoErroneo() {
-	         super(Response.status(Response.Status.NOT_FOUND)
-	             .entity("Los elemntos ingresados tienen un problema para ser ingresados").type(MediaType.TEXT_PLAIN).build());
-	     }
-	}
 }
