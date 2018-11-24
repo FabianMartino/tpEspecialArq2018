@@ -269,8 +269,10 @@ public class TestRESTInterface {
 	}
 	@Test
 	public void asignarTrabajo() throws ClientProtocolException, IOException {
-		String url = BASE_URL + "/evaluaciones/asignar/30/18/2018-11-22/9";
+		String url = BASE_URL + "/evaluaciones/asignar/30/18/2018-12-25/9";
+
 		HttpPost post = new HttpPost(url);
+		
 		HttpResponse response = client.execute(post);
 		
 		System.out.println("\nPOST "+url);

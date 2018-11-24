@@ -1,5 +1,7 @@
 package WebServices;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import com.tpEspecialArq2018.Evaluacion;
 import com.tpEspecialArq2018.EvaluacionDAO;
@@ -46,10 +49,16 @@ public class EvaluacionServices {
 		return e;
 	}
 	
+	private Date formatDateFromString(String fecha) throws ParseException  {
+		String pattern = "yyyy-MM-dd";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		return simpleDateFormat.parse(fecha);
+	}
+	
 	@POST
 	@Path("/asignar/{idUser}/{idTrab}/{fecha}/{nota}")
 	@Consumes(MediaType.APPLICATION_JSON) @Produces(MediaType.APPLICATION_JSON)
-	public Response asignarEvaluacion(@PathParam("idUser") long idUser,@PathParam("idTrab") long idTrab,@PathParam("fecha") Date fecha,@PathParam("nota") int nota) {
+	public Response asignarEvaluacion(@PathParam("idUser") long idUser,@PathParam("idTrab") long idTrab,@PathParam("fecha") String fecha,@PathParam("nota") int nota) throws ParseException {
 		Trabajo t = TrabajoDAO.getInstance().findById(idTrab);
 		Usuario u = UsuarioDAO.getInstance().findById(idUser);
 		List<Evaluacion> evaTrabajo = TrabajoDAO.getInstance().EvaluacionesTrabajo(idTrab);
@@ -62,15 +71,16 @@ public class EvaluacionServices {
 			}
 		}
 		if(evaTrabajo.size()<3 && evaUsuario.size()<3 && !condicionAutor ) {
-			Evaluacion eva = new Evaluacion(u, t, fecha, nota);
+			Date f = formatDateFromString(fecha);
+			Evaluacion eva = new Evaluacion(u, t, f, nota);
 			Evaluacion result= EvaluacionDAO.getInstance().persist(eva);
 			if(result==null) {
 				throw new RecursoDuplicado(eva.getId());
 			}else {
 				return Response.status(201).entity(eva).build();
-			}	
+			}
 		}else {
-			throw new RecursoNoExiste(u.getId_user());
+			throw new RecursoErroneo();
 		}	
 	}
 	
@@ -88,4 +98,10 @@ public class EvaluacionServices {
 	     }
 	}
 	
+	public class RecursoErroneo extends WebApplicationException {
+	     public RecursoErroneo() {
+	         super(Response.status(Response.Status.NOT_FOUND)
+	             .entity("Los elemntos ingresados tienen un problema para ser ingresados").type(MediaType.TEXT_PLAIN).build());
+	     }
+	}
 }
